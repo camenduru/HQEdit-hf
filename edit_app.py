@@ -48,9 +48,11 @@ example_instructions = [
 model_id = "MudeHui/ip2p-warp-gpt4v"
 
 def main():
-    pipe = StableDiffusionInstructPix2PixPipeline.from_pretrained(model_id, torch_dtype=torch.float, safety_checker=None)
     if torch.cuda.is_available():
+        pipe = StableDiffusionInstructPix2PixPipeline.from_pretrained(model_id, torch_dtype=torch.float16, safety_checker=None)
         pipe = pipe.to('cuda')
+    else:
+        pipe = StableDiffusionInstructPix2PixPipeline.from_pretrained(model_id, torch_dtype=torch.float, safety_checker=None)
     pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)
     example_image = Image.open("imgs/example.jpg").convert("RGB")
 
