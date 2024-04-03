@@ -111,11 +111,11 @@ def main():
 
     with gr.Blocks() as demo:
         gr.HTML("""<h1 style="font-weight: 900; margin-bottom: 7px;">
-   InstructPix2Pix: Learning to Follow Image Editing Instructions
+        HQ-Edit: A High-Quality and High-Coverage Dataset for General Image Editing
 </h1>
 <p>For faster inference without waiting in queue, you may duplicate the space and upgrade to GPU in settings.
 <br/>
-<a href="https://huggingface.co/spaces/timbrooks/instruct-pix2pix?duplicate=true">
+<a href="https://huggingface.co/spaces/tennant/HQEdit?duplicate=true">
 <img style="margin-top: 0em; margin-bottom: 0em" src="https://bit.ly/3gLdBN6" alt="Duplicate Space"></a>
 <p/>""")
         with gr.Row():
