@@ -4,3 +4,4 @@ torchvision
 numpy
 transformers
 git+https://github.com/huggingface/diffusers
+accelerate
