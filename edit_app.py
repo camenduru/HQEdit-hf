@@ -55,27 +55,6 @@ def main():
     else:
         pipe = StableDiffusionInstructPix2PixPipeline.from_pretrained(model_id, torch_dtype=torch.float, safety_checker=None)
     pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)
-    example_image = Image.open("imgs/example.jpg").convert("RGB")
-
-    def load_example(
-        steps: int,
-        randomize_seed: bool,
-        seed: int,
-        randomize_cfg: bool,
-        text_cfg_scale: float,
-        image_cfg_scale: float,
-    ):
-        example_instruction = random.choice(example_instructions)
-        return [example_image, example_instruction] + generate(
-            example_image,
-            example_instruction,
-            steps,
-            randomize_seed,
-            seed,
-            randomize_cfg,
-            text_cfg_scale,
-            image_cfg_scale,
-        )
 
     def generate(
         input_image: Image.Image,
