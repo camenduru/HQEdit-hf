@@ -7,6 +7,7 @@ from glob import glob
 import gradio as gr
 import torch
 from PIL import Image, ImageOps
+from datasets import load_dataset
 from diffusers import StableDiffusionInstructPix2PixPipeline, EulerAncestralDiscreteScheduler
 
 
@@ -97,6 +98,18 @@ def main():
         # Retrieve the image file path from the dictionary based on the selected name
         return image_options[image_name]
 
+    dataset = load_dataset("UCSC-VLAA/HQ-Edit-data-demo")
+
+    def sample():
+        sample_id = random.choice(list(range(len(dataset["train"]))))
+        sample = dataset["train"][sample_id]
+        return [sample["input_image"], sample["output_image"], sample["edit"], sample["inverse_edit"]]
+
+    def show_large_image(image_info):
+        # Returns the PIL image and caption for larger display
+        # return image_info['image'], image_info['caption']
+        return image_info
+
     with gr.Blocks() as demo:
         gr.HTML("""<h1 style="font-weight: 900; margin-bottom: 7px;">
         HQ-Edit: A High-Quality and High-Coverage Dataset for General Image Editing
@@ -145,6 +158,20 @@ def main():
 
         gr.Markdown(help_text)
 
+        with gr.Row():
+            gr.Markdown("## Dataset Preview")
+            sample_button = gr.Button("See Another Sample")
+
+        with gr.Row():
+            # Set up the Gallery component with a specific number of columns
+            # gallery = gr.Gallery(value=image_data, label="Image Gallery", type="pil", columns=2)
+            # Display for larger image
+            input_image_preview = gr.Image(label="Input Image", type="pil", height=512, width=512)
+            output_image_preview = gr.Image(label="Output Image", type="pil", height=512, width=512)
+
+        edit_text = gr.Textbox(label="Edit Instruction")
+        inv_edit_text = gr.Textbox(label="Inverse Edit Instruction")
+
         dropdown.change(show_image, inputs=dropdown, outputs=input_image)
 
         generate_button.click(
@@ -167,6 +194,12 @@ def main():
             outputs=[steps, randomize_seed, seed, randomize_cfg, text_cfg_scale, image_cfg_scale, edited_image],
         )
 
+        sample_button.click(
+            fn=sample,
+            inputs=[],
+            outputs=[input_image_preview, output_image_preview, edit_text, inv_edit_text]
+        )
+    
     demo.queue()
     demo.launch(share=True, max_threads=1)
 
