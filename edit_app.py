@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 import random
+from glob import glob
 
 import gradio as gr
 import torch
@@ -111,6 +112,12 @@ def main():
     def reset():
         return [0, "Randomize Seed", 1371, "Fix CFG", 7.5, 1.5, None]
 
+    image_options = {path.split("/")[-1].split(".")[0]: path for path in sorted(glob("imgs/*png"))}
+
+    def show_image(image_name):
+        # Retrieve the image file path from the dictionary based on the selected name
+        return image_options[image_name]
+
     with gr.Blocks() as demo:
         gr.HTML("""<h1 style="font-weight: 900; margin-bottom: 7px;">
         HQ-Edit: A High-Quality and High-Coverage Dataset for General Image Editing
@@ -122,13 +129,14 @@ def main():
 <p/>""")
         with gr.Row():
             with gr.Column(scale=1, min_width=100):
-                generate_button = gr.Button("Generate")
-            # with gr.Column(scale=1, min_width=100):
-            #     load_button = gr.Button("Load Example")
-            with gr.Column(scale=1, min_width=100):
-                reset_button = gr.Button("Reset")
+                dropdown = gr.Dropdown(list(image_options.keys()), label="Select from Given Images")
+
             with gr.Column(scale=3):
                 instruction = gr.Textbox(lines=1, label="Edit Instruction", interactive=True)
+
+            with gr.Column(scale=1, min_width=100):
+                generate_button = gr.Button("Generate")
+                reset_button = gr.Button("Reset")
 
         with gr.Row():
             input_image = gr.Image(label="Input Image", type="pil", interactive=True, height=512, width=512)
@@ -158,18 +166,8 @@ def main():
 
         gr.Markdown(help_text)
 
-        # load_button.click(
-        #     fn=load_example,
-        #     inputs=[
-        #         steps,
-        #         randomize_seed,
-        #         seed,
-        #         randomize_cfg,
-        #         text_cfg_scale,
-        #         image_cfg_scale,
-        #     ],
-        #     outputs=[input_image, instruction, seed, text_cfg_scale, image_cfg_scale, edited_image],
-        # )
+        dropdown.change(show_image, inputs=dropdown, outputs=input_image)
+
         generate_button.click(
             fn=generate,
             inputs=[
