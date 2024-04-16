@@ -123,8 +123,8 @@ def main():
         with gr.Row():
             with gr.Column(scale=1, min_width=100):
                 generate_button = gr.Button("Generate")
-            with gr.Column(scale=1, min_width=100):
-                load_button = gr.Button("Load Example")
+            # with gr.Column(scale=1, min_width=100):
+            #     load_button = gr.Button("Load Example")
             with gr.Column(scale=1, min_width=100):
                 reset_button = gr.Button("Reset")
             with gr.Column(scale=3):
@@ -158,18 +158,18 @@ def main():
 
         gr.Markdown(help_text)
 
-        load_button.click(
-            fn=load_example,
-            inputs=[
-                steps,
-                randomize_seed,
-                seed,
-                randomize_cfg,
-                text_cfg_scale,
-                image_cfg_scale,
-            ],
-            outputs=[input_image, instruction, seed, text_cfg_scale, image_cfg_scale, edited_image],
-        )
+        # load_button.click(
+        #     fn=load_example,
+        #     inputs=[
+        #         steps,
+        #         randomize_seed,
+        #         seed,
+        #         randomize_cfg,
+        #         text_cfg_scale,
+        #         image_cfg_scale,
+        #     ],
+        #     outputs=[input_image, instruction, seed, text_cfg_scale, image_cfg_scale, edited_image],
+        # )
         generate_button.click(
             fn=generate,
             inputs=[
