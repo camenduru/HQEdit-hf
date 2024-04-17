@@ -7,6 +7,7 @@ sdk: gradio
 sdk_version: 4.25.0
 app_file: edit_app.py
 pinned: true
+license: cc-by-nc-4.0
 ---
 
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
