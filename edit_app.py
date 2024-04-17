@@ -93,12 +93,7 @@ def main():
     with gr.Blocks() as demo:
         gr.HTML("""<h1 style="font-weight: 900; margin-bottom: 7px;">
         HQ-Edit: A High-Quality and High-Coverage Dataset for General Image Editing
-</h1>
-<p>For faster inference without waiting in queue, you may duplicate the space and upgrade to GPU in settings.
-<br/>
-<a href="https://huggingface.co/spaces/tennant/HQEdit?duplicate=true">
-<img style="margin-top: 0em; margin-bottom: 0em" src="https://bit.ly/3gLdBN6" alt="Duplicate Space"></a>
-<p/>""")
+</h1>""")
         with gr.Row():
             with gr.Column(scale=1, min_width=100):
                 dropdown = gr.Dropdown(list(image_options.keys()), label="Select from Given Images")
